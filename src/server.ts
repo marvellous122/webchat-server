@@ -27,9 +27,6 @@ wss.on('connection', (ws: WebSocket) => {
     ws.on('pong', () => {
         extWs.isAlive = true;
         console.log('--normalpong');
-        ws.send({
-            type: 'pong'
-        });
     });
 
     //connection is up, let's add a simple event
@@ -79,17 +76,17 @@ wss.on('connection', (ws: WebSocket) => {
 
 
 // remove unconnected clients
-// setInterval(() => {
-//     wss.clients.forEach((ws: WebSocket) => {
+setInterval(() => {
+    wss.clients.forEach((ws: WebSocket) => {
 
-//         const extWs = ws as ExtWebSocket;
+        const extWs = ws as ExtWebSocket;
 
-//         if (!extWs.isAlive) return ws.terminate();
-//         //check client is alive
-//         extWs.isAlive = false;
-//         ws.ping(null, undefined);
-//     });
-// }, 10000);
+        if (!extWs.isAlive) return ws.terminate();
+        //check client is alive
+        extWs.isAlive = false;
+        ws.ping(null, undefined);
+    });
+}, 10000);
 
 //start our server
 server.listen(process.env.PORT || 8999, () => {
