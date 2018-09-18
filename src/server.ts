@@ -34,7 +34,7 @@ wss.on('connection', (ws: WebSocket) => {
         console.log('recevied %s', msg);
         const jMsg = JSON.parse(msg);
         if (jMsg.type && jMsg.type === 'ping') {
-            console.log('---myping');
+            ws.send({type: 'pong'});
             return;
         }
         if (jMsg.msg === 'reconnecting') {
